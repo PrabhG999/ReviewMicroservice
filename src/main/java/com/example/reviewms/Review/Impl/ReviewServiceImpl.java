@@ -21,13 +21,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<Review> getAllReviews() {
+    public List<Review> getAllReviews(int companyId) {
         return reviewRepository.findAll();
     }
 
     @Override
     @Transactional
-    public boolean addReview(Review review) {
+    public boolean addReview(int companyId, Review review) {
         if (review != null) {
             reviewRepository.save(review);
             return true;
@@ -36,13 +36,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review getReviewById(int id) {
-        return reviewRepository.findById(id).orElse(null);
+    public Review getReviewById(int reviewId) {
+        return reviewRepository.findById(reviewId).orElse(null);
     }
 
     @Override
-    public boolean updateReview(int id,  Review updateReview) {
-        Optional<Review> reviewOptional = reviewRepository.findById(id);
+    public boolean updateReview(int reviewId,  Review updateReview) {
+        Optional<Review> reviewOptional = reviewRepository.findById(reviewId);
         if (reviewOptional.isPresent()) {
             Review review = reviewOptional.get();
             review.setTitle(updateReview.getTitle());
@@ -57,8 +57,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public boolean deleteReview(int id) {
-        Optional<Review> reviewOptional = reviewRepository.findById(id);
+    public boolean deleteReview(int reviewId) {
+        Optional<Review> reviewOptional = reviewRepository.findById(reviewId);
         if (reviewOptional.isPresent()) {
             Review review = reviewOptional.get();
             reviewRepository.delete(review);
@@ -69,9 +69,9 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public boolean patchReview(int id, Review patchReview) {
+    public boolean patchReview(int reviewId, Review patchReview) {
 
-        Optional<Review> reviewOptional = reviewRepository.findById(id);
+        Optional<Review> reviewOptional = reviewRepository.findById(reviewId);
         if (reviewOptional.isPresent()) {
             Review existingReview = reviewOptional.get();
             if (patchReview.getTitle() != null) {
