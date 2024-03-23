@@ -1,13 +1,12 @@
 package com.example.reviewms.Review.Impl;
 
-import com.example.jobapplication.Company.Company;
 import com.example.reviewms.Review.Review;
 import com.example.reviewms.Review.ReviewRepository;
 import com.example.reviewms.Review.ReviewService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +48,7 @@ public class ReviewServiceImpl implements ReviewService {
             review.setTitle(updateReview.getTitle());
             review.setDescription(updateReview.getDescription());
             review.setRating(updateReview.getRating());
-            review.setCompany(updateReview.getCompany());
+            review.setCompanyId(updateReview.getCompanyId());
             reviewRepository.save(review);
             return true;
         }
@@ -62,8 +61,6 @@ public class ReviewServiceImpl implements ReviewService {
         Optional<Review> reviewOptional = reviewRepository.findById(id);
         if (reviewOptional.isPresent()) {
             Review review = reviewOptional.get();
-            Company company = review.getCompany();
-            company.getReviews().remove(review);
             reviewRepository.delete(review);
             return true;
         } else {
@@ -83,8 +80,8 @@ public class ReviewServiceImpl implements ReviewService {
             if (patchReview.getDescription() != null) {
                 existingReview.setDescription(patchReview.getDescription());
             }
-            if (patchReview.getCompany() != null) {
-                existingReview.setCompany(patchReview.getCompany());
+            if(patchReview.getCompanyId()!= 0){
+                existingReview.setCompanyId(patchReview.getCompanyId());
             }
             reviewRepository.save(existingReview);
             return true;

@@ -1,23 +1,18 @@
 package com.example.reviewms.Review;
 
-import com.example.jobapplication.Company.Company;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Review")
 public class Review {
 
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    @JsonIgnoreProperties("reviews")
-    private Company company;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reviewId;
     private String title;
     private String description;
     private double rating;
+    private int companyId;
 
     public Review() { //JPA Constructor
     }
@@ -60,12 +55,12 @@ public class Review {
     public void setRating(double rating) {
         this.rating = rating;
     }
-
-    public Company getCompany() {
-        return company;
+    public int getCompanyId() {
+        return companyId;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
     }
+
 }
