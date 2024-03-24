@@ -1,15 +1,20 @@
 package com.example.reviewms.Review.Impl;
 
+import com.example.companyms.Company.Company;
+import com.example.reviewms.Review.DTO.ReviewWithCompanyDTO;
 import com.example.reviewms.Review.Review;
 import com.example.reviewms.Review.ReviewRepository;
 import com.example.reviewms.Review.ReviewService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -21,8 +26,21 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<Review> getAllReviews(int companyId) {
-        return reviewRepository.findAll();
+    public List<ReviewWithCompanyDTO> getAllReviews(int companyId) {
+        List<Review> reviews = reviewRepository.findAll();
+        List<ReviewWithCompanyDTO> reviewWithCompanyDTOS = new ArrayList<>();
+
+        return reviews.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    public ReviewWithCompanyDTO convertToDTO(Review review){
+        ReviewWithCompanyDTO reviewWithCompanyDTO = new ReviewWithCompanyDTO();
+        reviewWithCompanyDTO.setReview(review);
+        RestTemplate restTemplate = new RestTemplate();
+        Company company = restTemplate.getForObject("http://localhost:8081/companies/" + review.getCompanyId(),
+                Company.class);
+        reviewWithCompanyDTO.setCompany(company);
+        return reviewWithCompanyDTO;
     }
 
     @Override

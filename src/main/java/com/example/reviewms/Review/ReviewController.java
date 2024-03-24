@@ -1,5 +1,6 @@
 package com.example.reviewms.Review;
 
+import com.example.reviewms.Review.DTO.ReviewWithCompanyDTO;
 import jakarta.persistence.Id;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,8 @@ public class ReviewController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Review>> getAllReviews(@RequestParam int companyId) {
-        List<Review> reviews = reviewService.getAllReviews(companyId);
+    public ResponseEntity<List<ReviewWithCompanyDTO>> getAllReviews(@RequestParam int companyId) {
+        List<ReviewWithCompanyDTO> reviews = reviewService.getAllReviews(companyId);
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 
