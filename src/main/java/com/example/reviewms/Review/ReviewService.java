@@ -1,11 +1,11 @@
 package com.example.reviewms.Review;
 
-import org.springframework.web.bind.annotation.RequestBody;
+import com.example.reviewms.Review.DTO.ReviewWithCompanyDTO;
 
 import java.util.List;
 
 public interface ReviewService {
-    List<Review> getAllReviews(int companyId);
+    List<ReviewWithCompanyDTO> getAllReviews(int companyId);
 
     boolean addReview(int companyId, Review review);
 
